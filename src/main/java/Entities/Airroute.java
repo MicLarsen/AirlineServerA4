@@ -24,11 +24,11 @@ public class Airroute {
 
     private String airline;
     private String flightID, flightNumber;
-    private Date date;
+    private String date;
     private double numberOfSeats, traveltime;
     private String origin, destination;
 
-    public Airroute(String airline, String flightID, String flightNumber, Date date, double numberOfSeats, double traveltime, String origin, String destination) {
+    public Airroute(String airline, String flightID, String flightNumber, String date, double numberOfSeats, double traveltime, String origin, String destination) {
         this.airline = "AirlineG4A";
         this.flightID = flightID;
         this.flightNumber = flightNumber;
@@ -63,11 +63,11 @@ public class Airroute {
         this.flightNumber = flightNumber;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

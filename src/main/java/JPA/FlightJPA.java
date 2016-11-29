@@ -30,10 +30,6 @@ public class FlightJPA implements RestInterface{
         return returnObj;
     }
 
-    public FlightPrices getEntity(FlightPrices fp){
-        return null;
-    }
-
     @Override
     public List<Airroute> getFlightsByOrigin(String origin, String date, String tickets) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
