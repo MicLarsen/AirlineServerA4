@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import java.util.TimeZone;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * @author Michael
@@ -25,6 +27,7 @@ public class AirlineEngine {
     private String origin, destination;
     private final String[] airportTags = {"CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW"};
     Airroute aRoute;
+    
 
     public AirlineEngine() {
         random = new Random();
@@ -234,6 +237,9 @@ public class AirlineEngine {
             int HH = 10;
             int mm = 00;
             for (int n = 0; n < 7; n++) {
+                
+                
+                
                 flightID = generateFlightID(4) + "-" + generateFlightID(9);
                 flightNumber = "G4A" + generateFlightID(4);
                 String aDate = createISO8601Date(i, HH, mm);
