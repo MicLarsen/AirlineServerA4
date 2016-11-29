@@ -1,3 +1,5 @@
+package AirlineEngineTests;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -99,19 +101,7 @@ public class CreateAirrouteRNGTest {
     @Test
     public void rngStringLengthTestingOneThousand() {
         System.out.println("Testing 'generateFlightID for testParam : 1000");
-        testParam = 1000;
-        assertEquals(airlineEngine.generateFlightID(testParam).length(), testParam);
-    }
-
-    /**
-     * @testParam 1 Testing if return value from the RNG-engine returns String
-     * length of 1 with @testParam as expected Checked by taking the @testParam
-     * and comparing this number with the length of the returnvalue.
-     */
-    @Test
-    public void rngStringLengthTestingOneHundredThousand() {
-        System.out.println("Testing 'generateFlightID for testParam extrema : 100000");
-        testParam = 100000;
+        testParam = 10000;
         assertEquals(airlineEngine.generateFlightID(testParam).length(), testParam);
     }
 }
