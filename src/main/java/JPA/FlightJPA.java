@@ -3,9 +3,11 @@ package JPA;
 import Entities.Airroute;
 import Entities.FlightPrices;
 import Interfaces.RestInterface;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 /**
  *
@@ -36,7 +38,28 @@ public class FlightJPA implements RestInterface{
 
     @Override
     public List<Airroute> getFlightsByOrigin(String origin, String date, String tickets) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = utils.getEntityManager();
+        List<Airroute> list = new ArrayList();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+        transaction.begin();
+        Query q = em.createQuery("Select a FROM Airroute a WHERE a.origin=:origin AND a.date=:date AND a.tickets=:tickets",Airroute.class);
+        q.setParameter("origin", origin);
+        q.setParameter("date",date);
+        q.setParameter("tickets", tickets);
+        
+        for (Object obj : q.getResultList()) {
+            list.add((Airroute)obj);
+        }
+        
+        transaction.commit();
+        return list;        
+        } catch (Exception e) {
+            transaction.rollback();
+            return null;
+        } finally {
+            em.close();
+        }
     }
 
     @Override
@@ -44,3 +67,4 @@ public class FlightJPA implements RestInterface{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
+
