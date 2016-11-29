@@ -100,16 +100,4 @@ public class CreateAirrouteRNGTest {
         testParam = 1000;
         assertEquals(airlineEngine.generateFlightID(testParam).length(), testParam);
     }
-
-    /**
-     * @testParam 1 Testing if return value from the RNG-engine returns String
-     * length of 1 with @testParam as expected Checked by taking the @testParam
-     * and comparing this number with the length of the returnvalue.
-     */
-    @Test
-    public void rngStringLengthTestingOneHundredThousand() {
-        System.out.println("Testing 'generateFlightID for testParam extrema : 100000");
-        testParam = 100000;
-        assertEquals(airlineEngine.generateFlightID(testParam).length(), testParam);
-    }
 }
