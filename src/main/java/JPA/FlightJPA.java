@@ -3,8 +3,12 @@ package JPA;
 import Entities.Airroute;
 import Entities.FlightPrices;
 import Interfaces.RestInterface;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.DuplicateKeyException;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
@@ -22,20 +26,22 @@ public class FlightJPA implements RestInterface {
 
         EntityManager em = utils.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
-
+            
         transaction.begin();
         em.persist(returnObj);
         em.flush();
         transaction.commit();
 
         return returnObj;
+        
     }
     
-    public Airroute persistAirroute(Airroute ar){
+    public Airroute persistAirroute(Airroute ar) throws SQLIntegrityConstraintViolationException {
         Airroute returnObj = ar;
         
         EntityManager em = utils.getEntityManager();
-        
+        if(em.find(Airroute.class, ar.getFlightID()) == null){
+            
         em.getTransaction().begin();
         
         em.persist(returnObj);
@@ -44,6 +50,10 @@ public class FlightJPA implements RestInterface {
         em.getTransaction().commit();
         
         return returnObj;
+        } else {
+            throw new SQLIntegrityConstraintViolationException("duplicate entry for primary key");
+        }
+        
     }
 
     @Override
