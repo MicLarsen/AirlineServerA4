@@ -17,7 +17,7 @@ import javax.persistence.Persistence;
 public class JPAUtils {
 
     public EntityManager getEntityManager() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("tempPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
         
         return emf.createEntityManager();
     }

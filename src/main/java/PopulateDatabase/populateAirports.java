@@ -1,5 +1,5 @@
 
-import Entity.FlightPrices;
+import Entities.FlightPrices;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -13,7 +13,7 @@ import javax.persistence.Persistence;
 public class populateAirports {
 
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("tempPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
         EntityManager em = emf.createEntityManager();
 
         List<FlightPrices> list = new ArrayList();

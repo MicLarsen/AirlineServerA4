@@ -1,6 +1,6 @@
 package JPA;
 
-import Entity.FlightPrices;
+import Entities.FlightPrices;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 

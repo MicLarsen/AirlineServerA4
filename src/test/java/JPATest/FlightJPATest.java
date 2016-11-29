@@ -1,8 +1,10 @@
 package JPATest;
 
-import Entity.FlightPrices;
+import Entities.FlightPrices;
 import JPA.FlightJPA;
 import JPA.JPAUtils;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -19,9 +21,11 @@ import static org.junit.Assert.*;
  */
 public class FlightJPATest {
     
-    JPAUtils jpau;
+    private JPAUtils jpau;
+    private static List<FlightPrices> list;
     
     public FlightJPATest() {
+        list = new ArrayList();
         jpau = new JPAUtils();
     }
     
@@ -31,6 +35,7 @@ public class FlightJPATest {
     
     @AfterClass
     public static void tearDownClass() {
+        cleanupDatabase();
     }
     
     @Before
@@ -52,14 +57,25 @@ public class FlightJPATest {
     
     @Test //TFD!
     public void FlightPriceEntityPersistToDatabaseTest(){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("tempPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
         EntityManager em = emf.createEntityManager();
         FlightPrices fp = new FlightPrices("test", "test", 20.00);
-        
         FlightJPA fjpa = new FlightJPA();
         FlightPrices objPersisted = fjpa.persistEntity(fp);
+        list.add(fp);
         
         assertEquals(objPersisted.getClass(), em.find(FlightPrices.class, objPersisted.getId()).getClass());   
+    }
+    
+    private static void cleanupDatabase() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
+        EntityManager em = emf.createEntityManager();
+        
+        for (FlightPrices fp : list) {
+            System.out.println(fp.getId());
+            FlightPrices toRemove = em.find(FlightPrices.class, fp.getId());
+            em.remove(toRemove);
+        }
     }
     
 }
