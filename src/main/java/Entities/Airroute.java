@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  *
@@ -18,17 +19,22 @@ import javax.persistence.Id;
  */
 @Entity
 public class Airroute {
-
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String flightID;
 
     private String airline;
-    private String flightID, flightNumber;
-    private Date date;
-    private double numberOfSeats, traveltime;
+    private String flightNumber;
+    private String date;
+    private int numberOfSeats, traveltime;
     private String origin, destination;
+    
+    @Transient
+    private double totalPrice;
 
-    public Airroute(String airline, String flightID, String flightNumber, Date date, double numberOfSeats, double traveltime, String origin, String destination) {
+    public Airroute(){}
+    
+    public Airroute(String airline, String flightID, String flightNumber, String date, int numberOfSeats, int traveltime, String origin, String destination) {
         this.airline = "AirlineG4A";
         this.flightID = flightID;
         this.flightNumber = flightNumber;
@@ -37,6 +43,19 @@ public class Airroute {
         this.traveltime = traveltime;
         this.origin = origin;
         this.destination = destination;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+    
+    public void calculateTotalPrice(double totalPrice, String tickets){
+        double price = (totalPrice * Integer.parseInt(tickets));
+        this.totalPrice = price;
     }
 
     public String getAirline() {
@@ -63,27 +82,27 @@ public class Airroute {
         this.flightNumber = flightNumber;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public double getNumberOfSeats() {
+    public int getNumberOfSeats() {
         return numberOfSeats;
     }
 
-    public void setNumberOfSeats(double numberOfSeats) {
+    public void setNumberOfSeats(int numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public double getTraveltime() {
+    public int getTraveltime() {
         return traveltime;
     }
 
-    public void setTraveltime(double traveltime) {
+    public void setTraveltime(int traveltime) {
         this.traveltime = traveltime;
     }
 
