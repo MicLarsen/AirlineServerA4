@@ -44,7 +44,7 @@ public class FlightsResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{from}/{date}/{tickets}")
     public String getJson(@PathParam("from") String from, @PathParam("date") String date, @PathParam("tickets") String ticket) {
-        RestInterface restint = new RestInterface() {};
+        RestInterface restint = new RestInterface();
         JSONObject main = new JSONObject();
         main.put("airline", "gruppe4");
         JSONArray results = new JSONArray();
