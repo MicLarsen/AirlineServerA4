@@ -48,8 +48,7 @@ public class CreateAirrouteDestinationTest {
     @Test
     public void rngStringLengthTestingMinusOne() {
         System.out.println("Testing getDestination for IATA airport codes - Test executed 10.000.000 times");
-        for (int i = 0; i < 10000000; i++) {
-            System.out.println(i);
+        for (int i = 0; i < 1000; i++) {
             String testParam = airportTags[random.nextInt(airportTags.length - 1)];
             assertNotEquals(airlineEngine.getDestination(testParam), testParam);
         }
