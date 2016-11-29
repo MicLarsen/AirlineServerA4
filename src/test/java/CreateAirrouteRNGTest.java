@@ -97,7 +97,7 @@ public class CreateAirrouteRNGTest {
     @Test
     public void rngStringLengthTestingOneThousand() {
         System.out.println("Testing 'generateFlightID for testParam : 1000");
-        testParam = 1000;
+        testParam = 10000;
         assertEquals(airlineEngine.generateFlightID(testParam).length(), testParam);
     }
 }
