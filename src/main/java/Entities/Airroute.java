@@ -27,6 +27,7 @@ public class Airroute {
     private String date;
     private double numberOfSeats, traveltime;
     private String origin, destination;
+    private double totalPrice;
 
     public Airroute(String airline, String flightID, String flightNumber, String date, double numberOfSeats, double traveltime, String origin, String destination) {
         this.airline = "AirlineG4A";
@@ -37,6 +38,19 @@ public class Airroute {
         this.traveltime = traveltime;
         this.origin = origin;
         this.destination = destination;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+    
+    public void calculateTotalPrice(double totalPrice, String tickets){
+        double price = (totalPrice * Integer.parseInt(tickets));
+        this.totalPrice = price;
     }
 
     public String getAirline() {
