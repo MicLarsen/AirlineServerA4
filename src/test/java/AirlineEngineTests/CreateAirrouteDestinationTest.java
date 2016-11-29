@@ -1,3 +1,5 @@
+package AirlineEngineTests;
+
 import PopulateDatabase.AirlineEngine;
 import java.util.Random;
 import org.junit.After;

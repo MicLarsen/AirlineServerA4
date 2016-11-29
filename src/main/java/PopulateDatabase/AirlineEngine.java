@@ -1,17 +1,21 @@
 package PopulateDatabase;
 
-import java.util.Date;
+import Entities.Airroute;
 import java.util.Random;
 
 /**
- *
  * @author Michael
+ *
+ * @JSON-object: "airline": "AngularJS Airline", "flights": [ { "flightID":
+ * "2257-1457179200000", "flightNumber": "COL2257", "date":
+ * "2016-03-05T13:00:00.000Z", "numberOfSeats": 3, "totalPrice": 180,
+ * "traveltime": 120, "origin": "CDG", "destination": "CPH", } ] }
  */
 public class AirlineEngine {
     
     private static Random random;
     private final static String[] airportTags = {"CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW"};
-
+    Airroute aRoute;
     
     public AirlineEngine() {
         random = new Random();
@@ -36,6 +40,4 @@ public class AirlineEngine {
         }
         return dest;
     }
-
-    
 }
