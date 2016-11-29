@@ -1,5 +1,6 @@
 package PopulateDatabase;
 
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -8,7 +9,9 @@ import java.util.Random;
  */
 public class AirlineEngine {
     
-    Random random;
+    private static Random random;
+    private final static String[] airportTags = {"CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW"};
+
     
     public AirlineEngine() {
         random = new Random();
@@ -22,5 +25,17 @@ public class AirlineEngine {
         }
         return id;
     }
+     
+      public static String getDestination(String origin) {
+        String dest = airportTags[random.nextInt(airportTags.length - 1)];
+        while (origin == dest) {
+            dest = airportTags[random.nextInt(airportTags.length - 1)];
+            if (origin != dest) {
+                return dest;
+            }
+        }
+        return dest;
+    }
+
     
 }
