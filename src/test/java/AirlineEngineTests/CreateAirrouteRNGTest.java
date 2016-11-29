@@ -19,7 +19,7 @@ import org.junit.Ignore;
  *
  * @author Michael
  */
-@Ignore
+
 public class CreateAirrouteRNGTest {
 
     private static AirlineEngine airlineEngine;
