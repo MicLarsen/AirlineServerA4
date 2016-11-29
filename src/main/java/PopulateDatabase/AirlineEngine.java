@@ -1,18 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package PopulateDatabase;
+
+import java.util.Random;
 
 /**
  *
  * @author Michael
  */
 public class AirlineEngine {
+    
+    Random random;
+    
+    public AirlineEngine() {
+        random = new Random();
+    }
  
-    public String generateFlightID(int n) {
-        return "";
+     public String generateFlightID(int n) {
+        String id = "";
+        for (int i = 0; i < n; i++) {
+            int a = random.nextInt(8) + 1;
+            id += (String.valueOf(a));
+        }
+        return id;
     }
     
 }
