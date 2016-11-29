@@ -5,6 +5,8 @@
  */
 package Rest;
 
+import Interfaces.RestInterface;
+import java.util.ArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -14,6 +16,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
@@ -41,7 +44,19 @@ public class FlightsResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{from}/{date}/{tickets}")
     public String getJson(@PathParam("from") String from, @PathParam("date") String date, @PathParam("tickets") String ticket) {
-        JSONObject obj = new JSONObject();
+        RestInterface restint = new RestInterface() {};
+        JSONObject main = new JSONObject();
+        main.put("airline", "gruppe4");
+        JSONArray results = new JSONArray();
+        ArrayList arr = restint.getFlights(from,date,tickets);
+        
+        for (Object res : arr) {
+            JSONObject obj = new JSONObject();
+            obj.put("flightID",res.getFlightID());
+            
+            results.add(obj);
+        }
+        main.put("flights",results);
         throw new UnsupportedOperationException();
     }
     @GET
