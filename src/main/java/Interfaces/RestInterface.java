@@ -5,11 +5,15 @@
  */
 package Interfaces;
 
+import Entities.Airroute;
+import java.util.List;
+
 /**
  *
  * @author Joakim
  */
 public interface RestInterface {
-    public void getEntity();
+    public List<Airroute> getFlightsByOrigin(String origin, String date, String tickets);
+    public List<Airroute> getFlightsByOriginDest(String origin, String destination, String date, String tickets);
     
 }

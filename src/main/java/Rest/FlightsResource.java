@@ -5,8 +5,11 @@
  */
 package Rest;
 
+import Entities.Airroute;
 import Interfaces.RestInterface;
+import JPA.FlightJPA;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -44,26 +47,55 @@ public class FlightsResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{from}/{date}/{tickets}")
     public String getJson(@PathParam("from") String from, @PathParam("date") String date, @PathParam("tickets") String ticket) {
-        RestInterface restint = new RestInterface();
+        RestInterface fjpa = new FlightJPA();
         JSONObject main = new JSONObject();
         main.put("airline", "gruppe4");
         JSONArray results = new JSONArray();
-        ArrayList arr = restint.getFlights(from,date,tickets);
+        List<Airroute> arr = fjpa.getFlightsByOrigin(from, date, ticket);
         
-        for (Object res : arr) {
+        for (Airroute res : arr) {
             JSONObject obj = new JSONObject();
             obj.put("flightID",res.getFlightID());
+            obj.put("flightNumber", res.getFlightNumber());
+            obj.put("date", res.getDate());
+            obj.put("numberOfSeats", res.getNumberOfSeats());
+//            obj.put("totalPrice", res.getTotalPrice());
+            obj.put("travelTime", res.getTraveltime());
+            obj.put("origin", res.getOrigin());
+            obj.put("destination", res.getDestination());
             
             results.add(obj);
         }
         main.put("flights",results);
-        throw new UnsupportedOperationException();
+        
+        return main.toString();
     }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{from}/{to}/{date}/{tickets}")
     public String getFlight(@PathParam("from") String from,@PathParam("to") String to, @PathParam("date") String date, @PathParam("tickets") String ticket){
-        throw new UnsupportedOperationException();
+        RestInterface fjpa = new FlightJPA();
+        JSONObject main = new JSONObject();
+        main.put("airline", "gruppe4");
+        JSONArray results = new JSONArray();
+        List<Airroute> arr = fjpa.getFlightsByOriginDest(from, to, date, ticket);
+        
+        for (Airroute res : arr) {
+            JSONObject obj = new JSONObject();
+            obj.put("flightID",res.getFlightID());
+            obj.put("flightNumber", res.getFlightNumber());
+            obj.put("date", res.getDate());
+            obj.put("numberOfSeats", res.getNumberOfSeats());
+//            obj.put("totalPrice", res.getTotalPrice());
+            obj.put("travelTime", res.getTraveltime());
+            obj.put("origin", res.getOrigin());
+            obj.put("destination", res.getDestination());
+            
+            results.add(obj);
+        }
+        main.put("flights",results);
+        
+        return main.toString();
     }
 
     /**

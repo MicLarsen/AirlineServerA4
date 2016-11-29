@@ -1,6 +1,9 @@
 package JPA;
 
+import Entities.Airroute;
 import Entities.FlightPrices;
+import Interfaces.RestInterface;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
@@ -8,7 +11,7 @@ import javax.persistence.EntityTransaction;
  *
  * @author nickl
  */
-public class FlightJPA {
+public class FlightJPA implements RestInterface{
 
     JPAUtils utils = new JPAUtils();
     
@@ -27,5 +30,17 @@ public class FlightJPA {
         return returnObj;
     }
 
-    
+    public FlightPrices getEntity(FlightPrices fp){
+        return null;
+    }
+
+    @Override
+    public List<Airroute> getFlightsByOrigin(String origin, String date, String tickets) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Airroute> getFlightsByOriginDest(String origin, String destination, String date, String tickets) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
