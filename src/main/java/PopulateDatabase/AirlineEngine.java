@@ -12,16 +12,17 @@ import java.util.Random;
  * "traveltime": 120, "origin": "CDG", "destination": "CPH", } ] }
  */
 public class AirlineEngine {
-    
+
     private static Random random;
+    String airline;
     private final static String[] airportTags = {"CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW"};
     Airroute aRoute;
-    
+
     public AirlineEngine() {
         random = new Random();
     }
- 
-     public String generateFlightID(int n) {
+
+    public String generateFlightID(int n) {
         String id = "";
         for (int i = 0; i < n; i++) {
             int a = random.nextInt(8) + 1;
@@ -29,8 +30,8 @@ public class AirlineEngine {
         }
         return id;
     }
-     
-      public static String getDestination(String origin) {
+
+    public static String getDestination(String origin) {
         String dest = airportTags[random.nextInt(airportTags.length - 1)];
         while (origin == dest) {
             dest = airportTags[random.nextInt(airportTags.length - 1)];
@@ -39,5 +40,12 @@ public class AirlineEngine {
             }
         }
         return dest;
+    }
+
+    
+    public void createAirlines(int number) {
+        
+        
+        
     }
 }
