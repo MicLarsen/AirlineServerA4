@@ -1,10 +1,12 @@
 package Entities;
 
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 /**
@@ -25,13 +27,15 @@ public class Airroute {
 
     private String airline;
     private String flightNumber;
-    private String date;
+    
+    @Temporal(TemporalType.DATE)
+    private Date date;
     private int numberOfSeats, traveltime;
     
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne
     private Airport origin;
     
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne
     private Airport destination;
     
     
@@ -40,7 +44,7 @@ public class Airroute {
 
     public Airroute(){}
     
-    public Airroute(String airline, String flightID, String flightNumber, String date, int numberOfSeats, int traveltime, Airport origin, Airport destination) {
+    public Airroute(String airline, String flightID, String flightNumber, Date date, int numberOfSeats, int traveltime, Airport origin, Airport destination) {
         this.airline = "AirlineG4A";
         this.flightID = flightID;
         this.flightNumber = flightNumber;
@@ -88,11 +92,11 @@ public class Airroute {
         this.flightNumber = flightNumber;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
