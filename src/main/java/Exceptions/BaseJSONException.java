@@ -13,7 +13,7 @@ import org.json.simple.JSONObject;
  */
 public class BaseJSONException extends Exception {
 
-    protected int errorCode;
+    private final int errorCode;
 
     public BaseJSONException(String msg, int errorCode) {
         super(msg);
@@ -25,6 +25,7 @@ public class BaseJSONException extends Exception {
         JSONObject obj = new JSONObject();
         obj.put("error", this.getMessage());
         obj.put("code", this.errorCode);
+        obj.put("exception", this.getClass().toString());
 
         return obj.toString();
     }
