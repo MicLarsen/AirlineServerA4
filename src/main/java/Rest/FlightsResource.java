@@ -46,13 +46,13 @@ public class FlightsResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{from}/{date}/{tickets}")
+    @Path("/{from}/{date}/{tickets}")
     public String getJson(@PathParam("from") String from, @PathParam("date") String date, @PathParam("tickets") String ticket) throws NoFlightsFoundException {
         RestInterface fjpa = new FlightJPA();
         
         List<Airroute> arr = fjpa.getFlightsByOrigin(from, date, ticket);
         
-        if (arr.isEmpty()) {
+        if (arr == null || arr.isEmpty()) {
             
             throw new NoFlightsFoundException("No flights exist with the supplied criteria.", 4);
             
@@ -80,7 +80,7 @@ public class FlightsResource {
     }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{from}/{to}/{date}/{tickets}")
+    @Path("/{from}/{to}/{date}/{tickets}")
     public String getFlight(@PathParam("from") String from,@PathParam("to") String to, @PathParam("date") String date, @PathParam("tickets") String ticket){
         RestInterface fjpa = new FlightJPA();
         JSONObject main = new JSONObject();
