@@ -3,12 +3,12 @@ package PopulateDatabase;
 import Entities.Airroute;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * @author Michael
@@ -21,18 +21,22 @@ import org.json.JSONObject;
 public class AirlineEngine {
 
     private Random random;
-    private String airline, flightID, flightNumber;
+    private String flightID, flightNumber;
     private String date;
     private int numberOfSeats, travelTime;
     private String origin, destination;
-    private final String[] airportTags = {"CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW", "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW"};
-    Airroute aRoute;
-    
+    private final String[] airportTags
+            = {"CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW",
+                "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW",
+                "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW"};
+
+    private Airroute route;
+    private List<Airroute> airline; // for testing purposes
 
     public AirlineEngine() {
         random = new Random();
-        this.airline = "Group 4A Airline";
         this.numberOfSeats = 300;
+        this.airline = new ArrayList();
     }
 
     public String generateFlightID(int n) {
@@ -84,7 +88,7 @@ public class AirlineEngine {
         return c.getTime();
     }
 
-    public double getTravelTime(String origin, String destination) {
+    public int getTravelTime(String origin, String destination) {
 
         switch (origin) {
             case "CPH":
@@ -228,8 +232,11 @@ public class AirlineEngine {
     }
 
     public static void main(String[] args) {
+
         AirlineEngine e = new AirlineEngine();
         e.createAirlines(200);
+        System.out.println(e.airline.size());
+        System.out.println(e.airline.get(1200).getOrigin());
     }
 
     public void createAirlines(int numberOfDays) {
@@ -237,16 +244,14 @@ public class AirlineEngine {
             int HH = 10;
             int mm = 00;
             for (int n = 0; n < 7; n++) {
-                
-                
-                
                 flightID = generateFlightID(4) + "-" + generateFlightID(9);
                 flightNumber = "G4A" + generateFlightID(4);
-                String aDate = createISO8601Date(i, HH, mm);
-                origin = airportTags[random.nextInt(airportTags.length-1)];
-                destination =  getDestination(origin);
-                
-                System.out.println(flightID + ", " + flightNumber + ", " + aDate + ", " + origin + " - " + destination);
+                this.date = createISO8601Date(i, HH, mm);
+                origin = airportTags[random.nextInt(airportTags.length - 1)];
+                destination = getDestination(origin);
+                this.travelTime = getTravelTime(origin,destination);
+                this.route = new Airroute("", flightID, flightNumber, date, numberOfSeats, travelTime, origin, destination);
+                this.airline.add(route);
                 HH += 2;
                 if (n % 2 == 0) {
                     mm = 30;
