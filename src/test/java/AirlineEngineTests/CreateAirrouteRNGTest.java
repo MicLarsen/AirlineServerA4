@@ -54,7 +54,7 @@ public class CreateAirrouteRNGTest {
     public void rngStringLengthTestingMinusOne() {
         System.out.println("Testing 'generateFlightID for testParam extrema : -1");
         testParam = -1;
-        assertEquals(airlineEngine.generateFlightID(testParam).length(), "".length());
+        assertEquals(airlineEngine.generateRandomNumbers(testParam).length(), "".length());
     }
 
     /**
@@ -66,7 +66,7 @@ public class CreateAirrouteRNGTest {
     public void rngStringLengthTestingzero() {
         System.out.println("Testing 'generateFlightID for testParam : 0");
         testParam = 0;
-        assertEquals(airlineEngine.generateFlightID(testParam).length(), "".length());
+        assertEquals(airlineEngine.generateRandomNumbers(testParam).length(), "".length());
     }
 
     /**
@@ -78,7 +78,7 @@ public class CreateAirrouteRNGTest {
     public void rngStringLengthTestingFour() {
         System.out.println("Testing 'generateFlightID for testParam (need for program) : 4");
         testParam = 4;
-        assertEquals(airlineEngine.generateFlightID(testParam).length(), testParam);
+        assertEquals(airlineEngine.generateRandomNumbers(testParam).length(), testParam);
     }
 
     /**
@@ -90,7 +90,7 @@ public class CreateAirrouteRNGTest {
     public void rngStringLengthTestingNine() {
         System.out.println("Testing 'generateFlightID for testParam (need for program) : 9");
         testParam = 9;
-        assertEquals(airlineEngine.generateFlightID(testParam).length(), testParam);
+        assertEquals(airlineEngine.generateRandomNumbers(testParam).length(), testParam);
     }
 
     /**
@@ -102,6 +102,6 @@ public class CreateAirrouteRNGTest {
     public void rngStringLengthTestingOneThousand() {
         System.out.println("Testing 'generateFlightID for testParam : 1000");
         testParam = 10000;
-        assertEquals(airlineEngine.generateFlightID(testParam).length(), testParam);
+        assertEquals(airlineEngine.generateRandomNumbers(testParam).length(), testParam);
     }
 }
