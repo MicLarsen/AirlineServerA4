@@ -98,7 +98,7 @@ public class FlightJPATest {
         Airport cph = em.getReference(Airport.class, "CPH");
         Airport jfk = em.getReference(Airport.class, "JFK");
         
-        Airroute ar = new Airroute("testAirline", "12345679876543", "767687909087656789", new Date(), 10983, 123098, cph, jfk);
+        Airroute ar = new Airroute( "12345679876543", "767687909087656789", new Date(), 10983, 123098, cph, jfk);
         try{
         FlightJPA fjpa = new FlightJPA();
         Airroute objPersisted = fjpa.persistAirroute(ar);
@@ -119,8 +119,8 @@ public class FlightJPATest {
         Airport cph = new Airport("CPH", "Copenhagen Airport");
         Airport atl = new Airport("ATL", "Hartsfield-Jackson Atlanta International Airport");
         
-        Airroute ar = new Airroute("testAirline", "123456879", "464646", new Date(), 1, 24, cph, atl);
-        Airroute ar2 = new Airroute("testAirline", "123456879", "464646", new Date(), 1, 24, cph, atl);
+        Airroute ar = new Airroute("123456879", "464646", new Date(), 1, 24, cph, atl);
+        Airroute ar2 = new Airroute("123456879", "464646", new Date(), 1, 24, cph, atl);
         arList.add(ar);
         FlightJPA fjpa = new FlightJPA();
         
@@ -164,10 +164,10 @@ public class FlightJPATest {
         Airport atl = new Airport("ATL", "Hartsfield-Jackson Atlanta International Airport");
         Airport jfk = new Airport("JFK", "John F. Kennedy International Airport");
         
-        list.add(new Airroute("testAirline1", "1234", "1726381723", new Date(), 32, 404, cph, atl));
-        list.add(new Airroute("testAirline2", "2234", "1726381723", new Date(), 32, 404, cph, atl));
-        list.add(new Airroute("testAirline3", "3234", "1726381723", new Date(), 32, 404, cph, atl));
-        list.add(new Airroute("testAirline4", "4234", "1726381723", new Date(), 32, 404, jfk, atl));
+        list.add(new Airroute("1234", "1726381723", new Date(), 32, 404, cph, atl));
+        list.add(new Airroute("2234", "1726381723", new Date(), 32, 404, cph, atl));
+        list.add(new Airroute("3234", "1726381723", new Date(), 32, 404, cph, atl));
+        list.add(new Airroute("4234", "1726381723", new Date(), 32, 404, jfk, atl));
         
         try{
             em.getTransaction().begin();

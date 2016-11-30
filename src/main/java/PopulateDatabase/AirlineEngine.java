@@ -2,16 +2,20 @@ package PopulateDatabase;
 
 import Entities.Airroute;
 import Entities.Airport;
+import JPA.FlightJPA;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.TimeZone;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 /**
  * @author Michael
@@ -33,29 +37,17 @@ public class AirlineEngine {
             = {"CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW",
                 "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW",
                 "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW"};
-    private Airroute route;
-    private List<Airroute> airline; // for testing purposes
 
     public AirlineEngine() {
         random = new Random();
         this.numberOfSeats = 300;
-        this.airline = new ArrayList();
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm.ss");
     }
 
     public static void main(String[] args) throws ParseException {
 
         AirlineEngine e = new AirlineEngine();
-//        e.createAirlines(200);
-//        System.out.println(e.airline.size());
-//        System.out.println(e.airline.get(1200).getOrigin());
-
-        String s = e.createISO8601Date(2, 10, 00);
-        System.out.println(s);
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm.ss");
-        Date date = format.parse(s);
-
-        System.out.println(date);
+        e.createAirlines(365);
 
     }
 
@@ -252,6 +244,9 @@ public class AirlineEngine {
     }
 
     public void createAirlines(int numberOfDays) throws ParseException {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
+        EntityManager em = emf.createEntityManager();
+
         for (int i = 0; i < numberOfDays; i++) {
             int HH = 10;
             int mm = 00;
@@ -264,8 +259,17 @@ public class AirlineEngine {
                 origin = airportTags[random.nextInt(airportTags.length - 1)];
                 destination = getDestination(origin);
                 this.travelTime = getTravelTime(origin, destination);
-                this.route = new Airroute("", flightID, flightNumber, date, numberOfSeats, travelTime, new Airport(origin, ""), new Airport(destination, ""));
-                this.airline.add(route);
+
+                Airport originAirport = em.getReference(Airport.class, origin);
+                Airport destinationAirport = em.getReference(Airport.class, destination);
+                
+                try {
+
+                    new FlightJPA().persistAirroute(new Airroute(flightID, flightNumber, date, numberOfSeats, travelTime, originAirport, destinationAirport));
+
+                } catch (SQLIntegrityConstraintViolationException ex) {
+                    Logger.getLogger(AirlineEngine.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 HH += 2;
                 if (n % 2 == 0) {
                     mm = 30;

@@ -1,7 +1,6 @@
 package Entities;
 
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -28,7 +27,7 @@ public class Airroute {
     private String airline;
     private String flightNumber;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     private int numberOfSeats, traveltime;
     
@@ -42,9 +41,10 @@ public class Airroute {
     @Transient
     private double totalPrice;
 
-    public Airroute(){}
+    public Airroute(){
+    }
     
-    public Airroute(String airline, String flightID, String flightNumber, Date date, int numberOfSeats, int traveltime, Airport origin, Airport destination) {
+    public Airroute(String flightID, String flightNumber, Date date, int numberOfSeats, int traveltime, Airport origin, Airport destination) {
         this.airline = "AirlineG4A";
         this.flightID = flightID;
         this.flightNumber = flightNumber;
