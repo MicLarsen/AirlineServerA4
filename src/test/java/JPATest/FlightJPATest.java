@@ -7,14 +7,12 @@ import JPA.FlightJPA;
 import JPA.JPAUtils;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.PersistenceException;
-import javax.persistence.RollbackException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -98,7 +96,7 @@ public class FlightJPATest {
         Airport cph = new Airport("CPH", "Copenhagen Airport");
         Airport jfk = new Airport("JFK", "John F. Kennedy International Airport");
         EntityManager em = emf.createEntityManager();
-        Airroute ar = new Airroute("testAirline", "12345679876543", "767687909087656789", "test date", 10983, 123098, cph, jfk);
+        Airroute ar = new Airroute("testAirline", "12345679876543", "767687909087656789", new Date(), 10983, 123098, cph, jfk);
         try{
         FlightJPA fjpa = new FlightJPA();
         Airroute objPersisted = fjpa.persistAirroute(ar);
@@ -119,8 +117,8 @@ public class FlightJPATest {
         Airport cph = new Airport("CPH", "Copenhagen Airport");
         Airport atl = new Airport("ATL", "Hartsfield-Jackson Atlanta International Airport");
         
-        Airroute ar = new Airroute("testAirline", "123456879", "464646", "aishda", 1, 24, cph, atl);
-        Airroute ar2 = new Airroute("testAirline", "123456879", "464646", "aishda", 1, 24, cph, atl);
+        Airroute ar = new Airroute("testAirline", "123456879", "464646", new Date(), 1, 24, cph, atl);
+        Airroute ar2 = new Airroute("testAirline", "123456879", "464646", new Date(), 1, 24, cph, atl);
         arList.add(ar);
         FlightJPA fjpa = new FlightJPA();
         
@@ -164,10 +162,10 @@ public class FlightJPATest {
         Airport atl = new Airport("ATL", "Hartsfield-Jackson Atlanta International Airport");
         Airport jfk = new Airport("JFK", "John F. Kennedy International Airport");
         
-        list.add(new Airroute("testAirline1", "1234", "1726381723", "testDate", 32, 404, cph, atl));
-        list.add(new Airroute("testAirline2", "2234", "1726381723", "testDate", 32, 404, cph, atl));
-        list.add(new Airroute("testAirline3", "3234", "1726381723", "testDate", 32, 404, cph, atl));
-        list.add(new Airroute("testAirline4", "4234", "1726381723", "testDate", 32, 404, jfk, atl));
+        list.add(new Airroute("testAirline1", "1234", "1726381723", new Date(), 32, 404, cph, atl));
+        list.add(new Airroute("testAirline2", "2234", "1726381723", new Date(), 32, 404, cph, atl));
+        list.add(new Airroute("testAirline3", "3234", "1726381723", new Date(), 32, 404, cph, atl));
+        list.add(new Airroute("testAirline4", "4234", "1726381723", new Date(), 32, 404, jfk, atl));
         
         try{
             em.getTransaction().begin();
