@@ -88,14 +88,16 @@ public class FlightJPATest {
         System.out.println("#FlightPriceEntityPersistToDatabaseTest Completed#");
     }
     
-    @Ignore
+    
     @Test
     public void AirrouteEntityPersistToDatabase(){
         System.out.println("#AirrouteEntityPersistToDatabase started!#");
         
-        Airport cph = new Airport("CPH", "Copenhagen Airport");
-        Airport jfk = new Airport("JFK", "John F. Kennedy International Airport");
         EntityManager em = emf.createEntityManager();
+        
+        Airport cph = em.getReference(Airport.class, "CPH");
+        Airport jfk = em.getReference(Airport.class, "JFK");
+        
         Airroute ar = new Airroute("testAirline", "12345679876543", "767687909087656789", new Date(), 10983, 123098, cph, jfk);
         try{
         FlightJPA fjpa = new FlightJPA();
