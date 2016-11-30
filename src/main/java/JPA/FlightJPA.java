@@ -106,6 +106,69 @@ public class FlightJPA implements RestInterface {
         }
     }
 
+    public boolean deleteFlights(Airroute ar){
+        EntityManager em = utils.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        
+        try{
+            transaction.begin();
+            em.remove(ar);
+            transaction.commit();
+            return true;
+        } catch(Exception e){
+            transaction.rollback();
+            return false;
+        }
+    }
+    
+    public boolean deleteFlightPrices(FlightPrices fp){
+        EntityManager em = utils.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        
+        
+        try{
+            transaction.begin();
+            em.remove(fp);
+            transaction.commit();
+            return true;
+        } catch(Exception e){
+            transaction.rollback();
+            return false;
+        }
+    }
+    
+    public Airroute updateFlight(Airroute ar){
+        EntityManager em = utils.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        
+        try{
+            transaction.begin();
+            em.merge(ar);
+            em.flush();
+            transaction.commit();
+            return ar;
+        } catch (Exception e){
+            transaction.rollback();
+            return null;
+        }
+    }
+    
+    public FlightPrices updateFlightPrices(FlightPrices fp){
+        EntityManager em = utils.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        
+        try{
+            transaction.begin();
+            em.merge(fp);
+            em.flush();
+            transaction.commit();
+            return fp;
+        } catch(Exception e){
+            transaction.rollback();
+            return null;
+        }
+    }
+    
     public double calculateTotalPrice(String origin, String destination, String tickets) {
         EntityManager em = utils.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
