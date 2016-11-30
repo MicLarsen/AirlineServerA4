@@ -6,6 +6,7 @@
 package Rest;
 
 import Entities.Airroute;
+import Exceptions.NoFlightsFoundException;
 import Interfaces.RestInterface;
 import JPA.FlightJPA;
 import java.util.ArrayList;
@@ -45,14 +46,21 @@ public class FlightsResource {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{from}/{date}/{tickets}")
-    public String getJson(@PathParam("from") String from, @PathParam("date") String date, @PathParam("tickets") String ticket) {
+    @Path("/{from}/{date}/{tickets}")
+    public String getJson(@PathParam("from") String from, @PathParam("date") String date, @PathParam("tickets") String ticket) throws NoFlightsFoundException {
         RestInterface fjpa = new FlightJPA();
+        
+        List<Airroute> arr = fjpa.getFlightsByOrigin(from, date, ticket);
+        
+        if (arr == null || arr.isEmpty()) {
+            
+            throw new NoFlightsFoundException("No flights exist with the supplied criteria.", 4);
+            
+        }
+        
         JSONObject main = new JSONObject();
         main.put("airline", "gruppe4");
         JSONArray results = new JSONArray();
-        List<Airroute> arr = fjpa.getFlightsByOrigin(from, date, ticket);
-        
         for (Airroute res : arr) {
             JSONObject obj = new JSONObject();
             obj.put("flightID",res.getFlightID());
@@ -72,7 +80,7 @@ public class FlightsResource {
     }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{from}/{to}/{date}/{tickets}")
+    @Path("/{from}/{to}/{date}/{tickets}")
     public String getFlight(@PathParam("from") String from,@PathParam("to") String to, @PathParam("date") String date, @PathParam("tickets") String ticket){
         RestInterface fjpa = new FlightJPA();
         JSONObject main = new JSONObject();

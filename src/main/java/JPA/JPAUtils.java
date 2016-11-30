@@ -15,11 +15,21 @@ import javax.persistence.Persistence;
  * @author nickl
  */
 public class JPAUtils {
-
+    
+    EntityManagerFactory emf;
+    
+    public JPAUtils(){
+        emf = Persistence.createEntityManagerFactory("AirlinePU");
+    }
+    
     public EntityManager getEntityManager() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
-        
         return emf.createEntityManager();
     }
+    
+    public EntityManagerFactory getEntityManagerFactory(){
+        return emf;
+    }
+    
+    
     
 }

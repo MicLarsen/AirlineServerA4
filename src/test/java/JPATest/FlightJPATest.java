@@ -4,18 +4,25 @@ import Entities.Airroute;
 import Entities.FlightPrices;
 import JPA.FlightJPA;
 import JPA.JPAUtils;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
+import javax.persistence.RollbackException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 /**
  *
@@ -27,6 +34,10 @@ public class FlightJPATest {
     private static List<FlightPrices> fpList;
     private static List<Airroute> arList;
     private static EntityManagerFactory emf;
+    
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+    
     public FlightJPATest() {
         
     }
@@ -55,39 +66,69 @@ public class FlightJPATest {
     
     @Test //TFD!
     public void DatabaseConnectionTest(){
+        System.out.println("#DatabaseConnectionTest Started!#");
         
         EntityManager em = jpau.getEntityManager();
         
         assertNotNull(em);
+        System.out.println("#DatabaseConnectionTest Completed#");
     }
     
+//    @Ignore
     @Test //TFD!
     public void FlightPriceEntityPersistToDatabaseTest(){
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
+        System.out.println("#Starting FlightPriceEntityPersistToDatabaseTest#");
+        
         EntityManager em = emf.createEntityManager();
         FlightPrices fp = new FlightPrices("test", "test", 20.00);
         FlightJPA fjpa = new FlightJPA();
         FlightPrices objPersisted = fjpa.persistFlightPrices(fp);
         fpList.add(fp);
         
-        assertEquals(objPersisted.getClass(), em.find(FlightPrices.class, objPersisted.getId()).getClass());   
+        assertEquals(objPersisted.getClass(), em.find(FlightPrices.class, objPersisted.getId()).getClass()); 
+        System.out.println("#FlightPriceEntityPersistToDatabaseTest Completed#");
     }
     
+//    @Ignore
     @Test
     public void AirrouteEntityPersistToDatabase(){
-//        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
+        System.out.println("#AirrouteEntityPersistToDatabase started!#");
+        
         EntityManager em = emf.createEntityManager();
         Airroute ar = new Airroute("testAirline", "12345679876543", "767687909087656789", "test date", 10983, 123098, "CPH", "JFK");
-        
+        try{
         FlightJPA fjpa = new FlightJPA();
         Airroute objPersisted = fjpa.persistAirroute(ar);
         arList.add(objPersisted);
         assertEquals(objPersisted.getClass(), em.find(Airroute.class, objPersisted.getFlightID()).getClass());
-        
+        System.out.println("#AirrouteEntityPersistToDatabase Completed!#");
+        } catch(SQLIntegrityConstraintViolationException e){
+        }
     }
     
     @Test
+    public void DuplicateEntryOnAirroutePersistToDatabase() throws SQLIntegrityConstraintViolationException {
+        System.out.println("#DuplicateEntryOnAirroutePersistToDatabase Started#");
+        
+        EntityManager em = emf.createEntityManager();
+        
+        Airroute ar = new Airroute("testAirline", "123456879", "464646", "aishda", 1, 24, "CPH", "ATL");
+        Airroute ar2 = new Airroute("testAirline", "123456879", "464646", "aishda", 1, 24, "CPH", "ATL");
+        arList.add(ar);
+        FlightJPA fjpa = new FlightJPA();
+        
+        fjpa.persistAirroute(ar);
+        
+        exception.expect(SQLIntegrityConstraintViolationException.class);
+        
+        fjpa.persistAirroute(ar2);
+        System.out.println("#DuplicateEntryOnAirroutePersistToDatabase Completed#");
+    }
+    
+//    @Ignore
+    @Test
     public void getFlightsByOriginAndDestination(){
+        System.out.println("#getFlightsByOriginAndDestination Started#");
         
         String origin = "CPH";
         String destination = "ATL";
@@ -103,6 +144,7 @@ public class FlightJPATest {
         assertEquals(3, returnedList.size());
         assertEquals("3234", returnedList.get(2).getFlightID());
         
+        System.out.println("#getFlightsByOriginAndDestination Completed!#");
     }
     
     private void insertDummyFlights(){
