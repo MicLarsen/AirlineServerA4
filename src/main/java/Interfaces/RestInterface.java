@@ -6,6 +6,7 @@
 package Interfaces;
 
 import Entities.Airroute;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Joakim
  */
 public interface RestInterface {
-    public List<Airroute> getFlightsByOrigin(String origin, String date, String tickets);
-    public List<Airroute> getFlightsByOriginDest(String origin, String destination, String date, String tickets);
+    public List<Airroute> getFlightsByOrigin(String origin, Date date, String tickets);
+    public List<Airroute> getFlightsByOriginDest(String origin, String destination, Date date, String tickets);
     
 }

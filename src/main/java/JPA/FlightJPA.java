@@ -1,10 +1,12 @@
 package JPA;
 
+import Entities.Airport;
 import Entities.Airroute;
 import Entities.FlightPrices;
 import Interfaces.RestInterface;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -53,14 +55,17 @@ public class FlightJPA implements RestInterface {
     }
 
     @Override
-    public List<Airroute> getFlightsByOrigin(String origin, String date, String tickets) {
+    public List<Airroute> getFlightsByOrigin(String origin, Date date, String tickets) {
         EntityManager em = utils.getEntityManager();
         List<Airroute> list = new ArrayList();
         EntityTransaction transaction = em.getTransaction();
         try {
         transaction.begin();
+        
+        Airport originAirport = em.getReference(Airport.class, origin);
+        
         Query q = em.createQuery("Select a FROM Airroute a WHERE a.origin=:origin AND a.date=:date AND a.tickets=:tickets",Airroute.class);
-        q.setParameter("origin", origin);
+        q.setParameter("origin", originAirport);
         q.setParameter("date",date);
         q.setParameter("tickets", tickets);
         
@@ -78,16 +83,22 @@ public class FlightJPA implements RestInterface {
         }
     }
 
+    
+    //Refactoring to use airport class!!!
     @Override
-    public List<Airroute> getFlightsByOriginDest(String origin, String destination, String date, String tickets) {
+    public List<Airroute> getFlightsByOriginDest(String origin, String destination, Date date, String tickets) {
         EntityManager em = utils.getEntityManager();
         List<Airroute> list = new ArrayList();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
+            
+            Airport originAirport = em.getReference(Airport.class, origin);
+            Airport destinationAirport = em.getReference(Airport.class, destination);
+            
             Query q = em.createQuery("SELECT a FROM Airroute a WHERE a.origin=:origin AND a.destination=:dest AND a.date=:date", Airroute.class);
-            q.setParameter("origin", origin);
-            q.setParameter("dest", destination);
+            q.setParameter("origin", originAirport);
+            q.setParameter("dest", destinationAirport);
             q.setParameter("date", date);
 
             transaction.commit();
