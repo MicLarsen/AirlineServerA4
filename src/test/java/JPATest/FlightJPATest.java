@@ -1,5 +1,6 @@
 package JPATest;
 
+import Entities.Airport;
 import Entities.Airroute;
 import Entities.FlightPrices;
 import JPA.FlightJPA;
@@ -74,7 +75,7 @@ public class FlightJPATest {
         System.out.println("#DatabaseConnectionTest Completed#");
     }
     
-//    @Ignore
+    @Ignore
     @Test //TFD!
     public void FlightPriceEntityPersistToDatabaseTest(){
         System.out.println("#Starting FlightPriceEntityPersistToDatabaseTest#");
@@ -89,13 +90,15 @@ public class FlightJPATest {
         System.out.println("#FlightPriceEntityPersistToDatabaseTest Completed#");
     }
     
-//    @Ignore
+    @Ignore
     @Test
     public void AirrouteEntityPersistToDatabase(){
         System.out.println("#AirrouteEntityPersistToDatabase started!#");
         
+        Airport cph = new Airport("CPH", "Copenhagen Airport");
+        Airport jfk = new Airport("JFK", "John F. Kennedy International Airport");
         EntityManager em = emf.createEntityManager();
-        Airroute ar = new Airroute("testAirline", "12345679876543", "767687909087656789", "test date", 10983, 123098, "CPH", "JFK");
+        Airroute ar = new Airroute("testAirline", "12345679876543", "767687909087656789", "test date", 10983, 123098, cph, jfk);
         try{
         FlightJPA fjpa = new FlightJPA();
         Airroute objPersisted = fjpa.persistAirroute(ar);
@@ -106,14 +109,18 @@ public class FlightJPATest {
         }
     }
     
+    @Ignore
     @Test
     public void DuplicateEntryOnAirroutePersistToDatabase() throws SQLIntegrityConstraintViolationException {
         System.out.println("#DuplicateEntryOnAirroutePersistToDatabase Started#");
         
         EntityManager em = emf.createEntityManager();
         
-        Airroute ar = new Airroute("testAirline", "123456879", "464646", "aishda", 1, 24, "CPH", "ATL");
-        Airroute ar2 = new Airroute("testAirline", "123456879", "464646", "aishda", 1, 24, "CPH", "ATL");
+        Airport cph = new Airport("CPH", "Copenhagen Airport");
+        Airport atl = new Airport("ATL", "Hartsfield-Jackson Atlanta International Airport");
+        
+        Airroute ar = new Airroute("testAirline", "123456879", "464646", "aishda", 1, 24, cph, atl);
+        Airroute ar2 = new Airroute("testAirline", "123456879", "464646", "aishda", 1, 24, cph, atl);
         arList.add(ar);
         FlightJPA fjpa = new FlightJPA();
         
@@ -125,7 +132,7 @@ public class FlightJPATest {
         System.out.println("#DuplicateEntryOnAirroutePersistToDatabase Completed#");
     }
     
-//    @Ignore
+    @Ignore
     @Test
     public void getFlightsByOriginAndDestination(){
         System.out.println("#getFlightsByOriginAndDestination Started#");
@@ -153,10 +160,14 @@ public class FlightJPATest {
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
         EntityManager em = emf.createEntityManager();
         
-        list.add(new Airroute("testAirline1", "1234", "1726381723", "testDate", 32, 404, "CPH", "ATL"));
-        list.add(new Airroute("testAirline2", "2234", "1726381723", "testDate", 32, 404, "CPH", "ATL"));
-        list.add(new Airroute("testAirline3", "3234", "1726381723", "testDate", 32, 404, "CPH", "ATL"));
-        list.add(new Airroute("testAirline4", "4234", "1726381723", "testDate", 32, 404, "JFK", "ATL"));
+        Airport cph = new Airport("CPH", "Copenhagen Airport");
+        Airport atl = new Airport("ATL", "Hartsfield-Jackson Atlanta International Airport");
+        Airport jfk = new Airport("JFK", "John F. Kennedy International Airport");
+        
+        list.add(new Airroute("testAirline1", "1234", "1726381723", "testDate", 32, 404, cph, atl));
+        list.add(new Airroute("testAirline2", "2234", "1726381723", "testDate", 32, 404, cph, atl));
+        list.add(new Airroute("testAirline3", "3234", "1726381723", "testDate", 32, 404, cph, atl));
+        list.add(new Airroute("testAirline4", "4234", "1726381723", "testDate", 32, 404, jfk, atl));
         
         try{
             em.getTransaction().begin();
