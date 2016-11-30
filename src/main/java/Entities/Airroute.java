@@ -1,10 +1,10 @@
 package Entities;
 
-import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 /**
@@ -27,14 +27,20 @@ public class Airroute {
     private String flightNumber;
     private String date;
     private int numberOfSeats, traveltime;
-    private String origin, destination;
+    
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Airport origin;
+    
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Airport destination;
+    
     
     @Transient
     private double totalPrice;
 
     public Airroute(){}
     
-    public Airroute(String airline, String flightID, String flightNumber, String date, int numberOfSeats, int traveltime, String origin, String destination) {
+    public Airroute(String airline, String flightID, String flightNumber, String date, int numberOfSeats, int traveltime, Airport origin, Airport destination) {
         this.airline = "AirlineG4A";
         this.flightID = flightID;
         this.flightNumber = flightNumber;
@@ -106,19 +112,19 @@ public class Airroute {
         this.traveltime = traveltime;
     }
 
-    public String getOrigin() {
+    public Airport getOrigin() {
         return origin;
     }
 
-    public void setOrigin(String origin) {
+    public void setOrigin(Airport origin) {
         this.origin = origin;
     }
 
-    public String getDestination() {
+    public Airport getDestination() {
         return destination;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Airport destination) {
         this.destination = destination;
     }
 }
