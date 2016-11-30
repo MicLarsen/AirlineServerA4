@@ -251,7 +251,7 @@ public class AirlineEngine {
         return 0;
     }
 
-    public void createAirlines(int numberOfDays) {
+    public void createAirlines(int numberOfDays) throws ParseException {
         for (int i = 0; i < numberOfDays; i++) {
             int HH = 10;
             int mm = 00;
