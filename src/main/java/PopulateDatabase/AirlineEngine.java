@@ -39,7 +39,15 @@ public class AirlineEngine {
         this.airline = new ArrayList();
     }
 
-    public String generateFlightID(int n) {
+    public static void main(String[] args) {
+
+        AirlineEngine e = new AirlineEngine();
+        e.createAirlines(200);
+        System.out.println(e.airline.size());
+        System.out.println(e.airline.get(1200).getOrigin());
+    }
+
+    public String generateRandomNumbers(int n) {
         String id = "";
         for (int i = 0; i < n; i++) {
             int a = random.nextInt(8) + 1;
@@ -62,7 +70,7 @@ public class AirlineEngine {
     public String createISO8601Date(int plusDays, int HH, int mm) {
 
         TimeZone timeZone = TimeZone.getTimeZone("UTC");
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'"); // Quoted "Z" to indicate UTC, no timezone offset
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'");
         dateFormat.setTimeZone(timeZone);
         String returnDate = dateFormat.format(getFutureDate(plusDays));
 
@@ -231,25 +239,17 @@ public class AirlineEngine {
         return 0;
     }
 
-    public static void main(String[] args) {
-
-        AirlineEngine e = new AirlineEngine();
-        e.createAirlines(200);
-        System.out.println(e.airline.size());
-        System.out.println(e.airline.get(1200).getOrigin());
-    }
-
     public void createAirlines(int numberOfDays) {
         for (int i = 0; i < numberOfDays; i++) {
             int HH = 10;
             int mm = 00;
             for (int n = 0; n < 7; n++) {
-                flightID = generateFlightID(4) + "-" + generateFlightID(9);
-                flightNumber = "G4A" + generateFlightID(4);
+                flightID = generateRandomNumbers(4) + "-" + generateRandomNumbers(9);
+                flightNumber = "G4A" + generateRandomNumbers(4);
                 this.date = createISO8601Date(i, HH, mm);
                 origin = airportTags[random.nextInt(airportTags.length - 1)];
                 destination = getDestination(origin);
-                this.travelTime = getTravelTime(origin,destination);
+                this.travelTime = getTravelTime(origin, destination);
                 this.route = new Airroute("", flightID, flightNumber, date, numberOfSeats, travelTime, origin, destination);
                 this.airline.add(route);
                 HH += 2;
