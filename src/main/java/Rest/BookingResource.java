@@ -5,7 +5,6 @@
  */
 package Rest;
 
-import Entities.Airroute;
 import Entities.BookingOrder;
 import Entities.passengers;
 import JPA.BookingJPA;
@@ -16,10 +15,8 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
-import static javax.ws.rs.HttpMethod.POST;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import org.json.simple.JSONArray;
@@ -91,7 +88,7 @@ public class BookingResource {
         
         main.put("passengers", passengerList);
         
-//        bjpa.deleteBookingOrder(bo);
+        bjpa.deleteBookingOrder(bo);
 
         return main.toString();
         
