@@ -27,6 +27,7 @@ import org.junit.rules.ExpectedException;
  *
  * @author nickl
  */
+@Ignore
 public class FlightJPATest {
     
     private static JPAUtils jpau;
@@ -72,23 +73,23 @@ public class FlightJPATest {
         assertNotNull(em);
         System.out.println("#DatabaseConnectionTest Completed#");
     }
-    
-    @Ignore
-    @Test //TFD!
-    public void FlightPriceEntityPersistToDatabaseTest(){
-        System.out.println("#Starting FlightPriceEntityPersistToDatabaseTest#");
-        
-        EntityManager em = emf.createEntityManager();
-        FlightPrices fp = new FlightPrices("test", "test", 20.00);
-        FlightJPA fjpa = new FlightJPA();
-        FlightPrices objPersisted = fjpa.persistFlightPrices(fp);
-        fpList.add(fp);
-        
-        assertEquals(objPersisted.getClass(), em.find(FlightPrices.class, objPersisted.getId()).getClass()); 
-        System.out.println("#FlightPriceEntityPersistToDatabaseTest Completed#");
-    }
-    
-    
+//    this test is being refactored out!!!
+//    @Ignore
+//    @Test //TFD!
+//    public void FlightPriceEntityPersistToDatabaseTest(){
+//        System.out.println("#Starting FlightPriceEntityPersistToDatabaseTest#");
+//        
+//        EntityManager em = emf.createEntityManager();
+//        FlightPrices fp = new FlightPrices("test", "test", 20.00);
+//        FlightJPA fjpa = new FlightJPA();
+//        FlightPrices objPersisted = fjpa.persistFlightPrices(fp);
+//        fpList.add(fp);
+//        
+//        assertEquals(objPersisted.getClass(), em.find(FlightPrices.class, objPersisted.getId()).getClass()); 
+//        System.out.println("#FlightPriceEntityPersistToDatabaseTest Completed#");
+//    }
+//    
+//    
     @Test
     public void AirrouteEntityPersistToDatabase(){
         System.out.println("#AirrouteEntityPersistToDatabase started!#");
@@ -109,15 +110,15 @@ public class FlightJPATest {
         }
     }
     
-    @Ignore
+    @Ignore //Being refactored to use airport entity!
     @Test
     public void DuplicateEntryOnAirroutePersistToDatabase() throws SQLIntegrityConstraintViolationException {
         System.out.println("#DuplicateEntryOnAirroutePersistToDatabase Started#");
         
         EntityManager em = emf.createEntityManager();
         
-        Airport cph = new Airport("CPH", "Copenhagen Airport");
-        Airport atl = new Airport("ATL", "Hartsfield-Jackson Atlanta International Airport");
+        Airport cph = em.getReference(Airport.class, "CPH");
+        Airport atl = em.getReference(Airport.class, "ATL");
         
         Airroute ar = new Airroute("123456879", "464646", new Date(), 1, 24, cph, atl);
         Airroute ar2 = new Airroute("123456879", "464646", new Date(), 1, 24, cph, atl);
@@ -132,14 +133,14 @@ public class FlightJPATest {
         System.out.println("#DuplicateEntryOnAirroutePersistToDatabase Completed#");
     }
     
-    @Ignore
+    @Ignore //Being refactored to use airport entity!
     @Test
     public void getFlightsByOriginAndDestination(){
         System.out.println("#getFlightsByOriginAndDestination Started#");
         
         String origin = "CPH";
         String destination = "ATL";
-        String date = "testDate";
+        Date date = new Date(0);
         String tickets = "2";
         
         insertDummyFlights();
@@ -160,9 +161,10 @@ public class FlightJPATest {
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
         EntityManager em = emf.createEntityManager();
         
-        Airport cph = new Airport("CPH", "Copenhagen Airport");
-        Airport atl = new Airport("ATL", "Hartsfield-Jackson Atlanta International Airport");
-        Airport jfk = new Airport("JFK", "John F. Kennedy International Airport");
+        Airport cph = em.getReference(Airport.class, "CPH");
+        Airport atl = em.getReference(Airport.class, "ATL");
+        Airport jfk = em.getReference(Airport.class, "JFK");
+        
         
         list.add(new Airroute("1234", "1726381723", new Date(), 32, 404, cph, atl));
         list.add(new Airroute("2234", "1726381723", new Date(), 32, 404, cph, atl));

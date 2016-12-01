@@ -10,7 +10,7 @@ import javax.persistence.Id;
  * @author nickl
  */
 @Entity
-public class PassengerInfo {
+public class passengers {
     
     
     @Id
@@ -19,12 +19,13 @@ public class PassengerInfo {
     
     private String firstName, lastName;
     
-    public PassengerInfo(){}
-    public PassengerInfo(String firstName, String lastName){
+    public passengers(){}
+    
+    public passengers(String firstName, String lastName){
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
+    
     public String getFirstName() {
         return firstName;
     }

@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ExceptionMappers.NoFlightsFoundExceptionMapper.class);
+        resources.add(Rest.BookingResource.class);
         resources.add(Rest.FlightsResource.class);
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
     }

@@ -1,11 +1,14 @@
 package Entities;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -18,8 +21,12 @@ public class BookingOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
-    private List<PassengerInfo> passengers;
-    private String reserveeName, reserveePhone, flightId;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<passengers> passengers;
+    private String reserveeName, reserveePhone;
+    
+    @ManyToOne
+    private Airroute flightId;
     
     @Column(unique = true)
     private String reserveeEmail;
@@ -30,7 +37,7 @@ public class BookingOrder {
         
     } 
     
-    public BookingOrder(String flightId, int numberOfSeats, String reserveeName, String reserveePhone, String reserveeEmail, List<PassengerInfo> passengers){
+    public BookingOrder(Airroute flightId, int numberOfSeats, String reserveeName, String reserveePhone, String reserveeEmail, List<passengers> passengers){
         this.flightId = flightId;
         this.numberOfSeats = numberOfSeats;
         this.reserveeName = reserveeName;
@@ -38,12 +45,12 @@ public class BookingOrder {
         this.reserveeEmail = reserveeEmail;
         this.passengers = passengers;
     }
-
-    public List<PassengerInfo> getPassengers() {
+    
+    public List<passengers> getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(List<PassengerInfo> passengers) {
+    public void setPassengers(List<passengers> passengers) {
         this.passengers = passengers;
     }
 
@@ -63,11 +70,11 @@ public class BookingOrder {
         this.reserveePhone = reserveePhone;
     }
 
-    public String getFlightId() {
+    public Airroute getFlightId() {
         return flightId;
     }
 
-    public void setFlightId(String flightId) {
+    public void setFlightId(Airroute flightId) {
         this.flightId = flightId;
     }
 
