@@ -80,11 +80,14 @@ public class BookingJPA {
         try{
             em.getTransaction().begin();
             
+            bo = em.find(BookingOrder.class, bo.getId());
+            
             em.remove(bo);
             
             em.getTransaction().commit();
             return true;
         } catch(Exception e){
+            System.out.println("DeleteBookingOrder failed due to: " + e);
             em.getTransaction().rollback();
             return false;
         }

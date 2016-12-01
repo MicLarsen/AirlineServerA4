@@ -98,7 +98,9 @@ public class FlightsResource {
     public String getFlight(@PathParam("from") String from, @PathParam("to") String to, @PathParam("date") String date, @PathParam("tickets") String ticket) throws ParseException, NoFlightsFoundException {
         RestInterface fjpa = new FlightJPA();
 
+        //Parse from iso-8601 to normal date format
         ZonedDateTime iso8601 = ZonedDateTime.parse(ticket);
+        //Parse ZonedDateTime to normal Date object
         Date convertedDate = Date.from(iso8601.toInstant());
         
         List<Airroute> arr = fjpa.getFlightsByOriginDest(from, to, convertedDate, ticket);
