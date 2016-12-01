@@ -54,7 +54,7 @@ public class Airroute {
         this.origin = origin;
         this.destination = destination;
     }
-
+    
     public double getTotalPrice() {
         return totalPrice;
     }
@@ -63,8 +63,8 @@ public class Airroute {
         this.totalPrice = totalPrice;
     }
     
-    public void calculateTotalPrice(double totalPrice, String tickets){
-        double price = (totalPrice * Integer.parseInt(tickets));
+    public void calculateTotalPrice(String tickets){
+        double price = (this.totalPrice * Integer.parseInt(tickets));
         this.totalPrice = price;
     }
 

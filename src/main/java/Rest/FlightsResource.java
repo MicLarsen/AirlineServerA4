@@ -11,6 +11,10 @@ import Interfaces.RestInterface;
 import JPA.FlightJPA;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -52,10 +56,13 @@ public class FlightsResource {
     @Path("/{from}/{date}/{tickets}")
     public String getJson(@PathParam("from") String from, @PathParam("date") String date, @PathParam("tickets") String ticket) throws NoFlightsFoundException, ParseException {
         RestInterface fjpa = new FlightJPA();
+        
+        //Parse from iso-8601 to normal date format
+        ZonedDateTime iso8601 = ZonedDateTime.parse(date);
+        //Parse ZonedDateTime to normal Date object
+        Date convertedDate = Date.from(iso8601.toInstant());
 
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-
-        List<Airroute> arr = fjpa.getFlightsByOrigin(from, dt.parse(date), ticket);
+        List<Airroute> arr = fjpa.getFlightsByOrigin(from, convertedDate, ticket);
 
         if (arr == null || arr.isEmpty()) {
 
@@ -67,15 +74,16 @@ public class FlightsResource {
         main.put("airline", "gruppe4");
         JSONArray results = new JSONArray();
         for (Airroute res : arr) {
+            res.calculateTotalPrice(ticket);
             JSONObject obj = new JSONObject();
             obj.put("flightID", res.getFlightID());
             obj.put("flightNumber", res.getFlightNumber());
             obj.put("date", res.getDate());
             obj.put("numberOfSeats", res.getNumberOfSeats());
-//            obj.put("totalPrice", res.getTotalPrice());
+            obj.put("totalPrice", res.getTotalPrice());
             obj.put("travelTime", res.getTraveltime());
-            obj.put("origin", res.getOrigin());
-            obj.put("destination", res.getDestination());
+            obj.put("origin", res.getOrigin().getIATACode());
+            obj.put("destination", res.getDestination().getIATACode());
 
             results.add(obj);
         }
@@ -87,16 +95,23 @@ public class FlightsResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{from}/{to}/{date}/{tickets}")
-    public String getFlight(@PathParam("from") String from, @PathParam("to") String to, @PathParam("date") String date, @PathParam("tickets") String ticket) throws ParseException {
+    public String getFlight(@PathParam("from") String from, @PathParam("to") String to, @PathParam("date") String date, @PathParam("tickets") String ticket) throws ParseException, NoFlightsFoundException {
         RestInterface fjpa = new FlightJPA();
+
+        ZonedDateTime iso8601 = ZonedDateTime.parse(ticket);
+        Date convertedDate = Date.from(iso8601.toInstant());
+        
+        List<Airroute> arr = fjpa.getFlightsByOriginDest(from, to, convertedDate, ticket);
+        
+        if (arr == null || arr.isEmpty()){
+            
+            throw new NoFlightsFoundException("No flights exist wiht the supplied criteria.", 4);
+            
+        }
+        //Needs refactoring for total price calculation.
         JSONObject main = new JSONObject();
         main.put("airline", "gruppe4");
         JSONArray results = new JSONArray();
-        
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
-        
-        List<Airroute> arr = fjpa.getFlightsByOriginDest(from, to, dt.parse(date), ticket);
-
         for (Airroute res : arr) {
             JSONObject obj = new JSONObject();
             obj.put("flightID", res.getFlightID());

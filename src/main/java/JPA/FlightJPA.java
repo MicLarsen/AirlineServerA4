@@ -64,11 +64,11 @@ public class FlightJPA implements RestInterface {
         
         Airport originAirport = em.getReference(Airport.class, origin);
         
-        Query q = em.createQuery("Select a FROM Airroute a WHERE a.origin=:origin AND a.date=:date AND a.tickets=:tickets",Airroute.class);
+        Query q = em.createQuery("Select a FROM Airroute a WHERE a.origin=:origin AND a.date=:date",Airroute.class);
         q.setParameter("origin", originAirport);
-        q.setParameter("date",date);
-        q.setParameter("tickets", tickets);
-        
+        q.setParameter("date", date);
+//        q.setParameter("tickets", tickets);
+            System.out.println(q.getResultList().size());
         for (Object obj : q.getResultList()) {
             list.add((Airroute)obj);
         }
@@ -76,6 +76,7 @@ public class FlightJPA implements RestInterface {
         transaction.commit();
         return list;        
         } catch (Exception e) {
+            System.out.println("FAILED DUE TO: " + e.toString());
             transaction.rollback();
             return null;
         } finally {
@@ -95,11 +96,11 @@ public class FlightJPA implements RestInterface {
             
             Airport originAirport = em.getReference(Airport.class, origin);
             Airport destinationAirport = em.getReference(Airport.class, destination);
-            
+
             Query q = em.createQuery("SELECT a FROM Airroute a WHERE a.origin=:origin AND a.destination=:dest AND a.date=:date", Airroute.class);
             q.setParameter("origin", originAirport);
             q.setParameter("dest", destinationAirport);
-            q.setParameter("date", date);
+            q.setParameter("date", new java.sql.Date(date.getTime()));
 
             transaction.commit();
 

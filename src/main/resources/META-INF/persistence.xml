@@ -5,8 +5,8 @@
     <class>Entities.Airroute</class>
     <class>Entities.FlightPrices</class>
     <class>Entities.BookingOrder</class>
-    <class>Entities.PassengerInfo</class>
     <class>Entities.Airport</class>
+    <class>Entities.passengers</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql.nyxapp.net:3306/airlinea4"/>

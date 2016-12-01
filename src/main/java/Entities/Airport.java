@@ -23,6 +23,10 @@ public class Airport {
         this.airportName = airportName;
     }
 
+    public String getFullNameAndIATA(){
+        return airportName + "(" + IATACode + ")";
+    }
+    
     public String getIATACode() {
         return IATACode;
     }
