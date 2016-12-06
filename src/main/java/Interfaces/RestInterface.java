@@ -16,5 +16,6 @@ import java.util.List;
 public interface RestInterface {
     public List<Airroute> getFlightsByOrigin(String origin, Date date, String tickets);
     public List<Airroute> getFlightsByOriginDest(String origin, String destination, Date date, String tickets);
+    public double calculateTotalPrice(String origin, String destination, int tickets); 
     
 }
