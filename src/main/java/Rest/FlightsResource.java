@@ -1,18 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Rest;
 
 import Entities.Airroute;
 import Exceptions.NoFlightsFoundException;
 import Interfaces.RestInterface;
 import JPA.FlightJPA;
+import PopulateDatabase.AirlineEngine;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +32,8 @@ public class FlightsResource {
     @Context
     private UriInfo context;
 
+    AirlineEngine ae = new AirlineEngine();
+
     /**
      * Creates a new instance of FlightsResource
      */
@@ -56,7 +51,7 @@ public class FlightsResource {
     @Path("/{from}/{date}/{tickets}")
     public String getJson(@PathParam("from") String from, @PathParam("date") String date, @PathParam("tickets") String ticket) throws NoFlightsFoundException, ParseException {
         RestInterface fjpa = new FlightJPA();
-        
+
         //Parse from iso-8601 to normal date format
         ZonedDateTime iso8601 = ZonedDateTime.parse(date);
         //Parse ZonedDateTime to normal Date object
@@ -74,17 +69,15 @@ public class FlightsResource {
         main.put("airline", "gruppe4");
         JSONArray results = new JSONArray();
         for (Airroute res : arr) {
-            res.calculateTotalPrice(ticket);
             JSONObject obj = new JSONObject();
             obj.put("flightID", res.getFlightID());
             obj.put("flightNumber", res.getFlightNumber());
             obj.put("date", res.getDate());
             obj.put("numberOfSeats", res.getNumberOfSeats());
-            obj.put("totalPrice", res.getTotalPrice());
+            obj.put("totalPrice", fjpa.calculateTotalPrice(res.getOrigin().getIATACode(), res.getDestination().getIATACode(), Integer.parseInt(ticket)));
             obj.put("travelTime", res.getTraveltime());
             obj.put("origin", res.getOrigin().getIATACode());
             obj.put("destination", res.getDestination().getIATACode());
-
             results.add(obj);
         }
         main.put("flights", results);
@@ -102,13 +95,13 @@ public class FlightsResource {
         ZonedDateTime iso8601 = ZonedDateTime.parse(date);
         //Parse ZonedDateTime to normal Date object
         Date convertedDate = Date.from(iso8601.toInstant());
-        
+
         List<Airroute> arr = fjpa.getFlightsByOriginDest(from, to, convertedDate, ticket);
-        
-        if (arr == null || arr.isEmpty()){
-            
+
+        if (arr == null || arr.isEmpty()) {
+
             throw new NoFlightsFoundException("No flights exist wiht the supplied criteria.", 4);
-            
+
         }
         //Needs refactoring for total price calculation.
         JSONObject main = new JSONObject();
@@ -120,7 +113,7 @@ public class FlightsResource {
             obj.put("flightNumber", res.getFlightNumber());
             obj.put("date", res.getDate());
             obj.put("numberOfSeats", res.getNumberOfSeats());
-//            obj.put("totalPrice", res.getTotalPrice());
+            obj.put("totalPrice", fjpa.calculateTotalPrice(res.getOrigin().getIATACode(), res.getDestination().getIATACode(), Integer.parseInt(ticket)));
             obj.put("travelTime", res.getTraveltime());
             obj.put("origin", res.getOrigin().getIATACode());
             obj.put("destination", res.getDestination().getIATACode());

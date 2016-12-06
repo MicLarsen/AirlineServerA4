@@ -5,21 +5,13 @@ import Entities.Airroute;
 import Entities.FlightPrices;
 import Interfaces.RestInterface;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javafx.util.converter.LocalDateTimeStringConverter;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import javax.persistence.TemporalType;
 
 /**
  *
@@ -87,8 +79,6 @@ public class FlightJPA implements RestInterface {
             q.setParameter("origin", originAirport);
             q.setParameter("date", d);
             q.setParameter("nextDate", d2);
-//        q.setParameter("tickets", tickets);
-            System.out.println(q.getResultList().size());
             for (Object obj : q.getResultList()) {
                 list.add((Airroute) obj);
             }
@@ -110,9 +100,9 @@ public class FlightJPA implements RestInterface {
         EntityManager em = utils.getEntityManager();
         List<Airroute> list = new ArrayList();
         EntityTransaction transaction = em.getTransaction();
-        
+
         int dayInMilli = 86400000;
-        
+
         try {
             transaction.begin();
 
@@ -210,11 +200,10 @@ public class FlightJPA implements RestInterface {
         }
     }
 
-    public double calculateTotalPrice(String origin, String destination, String tickets) {
+    @Override
+    public double calculateTotalPrice(String origin, String destination, int tickets) {
         EntityManager em = utils.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
-
-        int ticketsInt = Integer.parseInt(tickets);
 
         transaction.begin();
         Query q = em.createQuery("SELECT f FROM FlightPrices f WHERE f.origin=:origin AND f.destination=:dest", FlightPrices.class);
@@ -224,6 +213,6 @@ public class FlightJPA implements RestInterface {
 
         FlightPrices fp = (FlightPrices) q.getSingleResult();
 
-        return fp.getPrice() * ticketsInt;
+        return fp.getPrice() * tickets;
     }
 }

@@ -2,6 +2,7 @@ package PopulateDatabase;
 
 import Entities.Airroute;
 import Entities.Airport;
+import Entities.FlightPrices;
 import JPA.FlightJPA;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.DateFormat;
@@ -34,21 +35,12 @@ public class AirlineEngine {
     private String origin, destination;
     DateFormat format;
     private final String[] airportTags
-            = {"CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW",
-                "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW",
-                "CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW"};
+            = {"CPH", "BCN", "JFK", "ATL", "AMS", "OSL", "TXL", "MOW"};
 
     public AirlineEngine() {
         random = new Random();
         this.numberOfSeats = 300;
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm.ss");
-    }
-
-    public static void main(String[] args) throws ParseException {
-
-        AirlineEngine e = new AirlineEngine();
-        e.createAirlines(365);
-
     }
 
     public String generateRandomNumbers(int n) {
@@ -243,6 +235,169 @@ public class AirlineEngine {
         return 0;
     }
 
+    public int getFlightPrice(String origin, String destination) {
+
+        switch (origin) {
+            case "CPH":
+                switch (destination) {
+                    case "BCN":
+                        return 120;
+                    case "JFK":
+                        return 520;
+                    case "ATL":
+                        return 510;
+                    case "AMS":
+                        return 190;
+                    case "OSL":
+                        return 200;
+                    case "TXL":
+                        return 195;
+                    case "MOW":
+                        return 235;
+                }
+            case "BCN":
+                switch (destination) {
+                    case "CPH":
+                        return 120;
+                    case "JFK":
+                        return 580;
+                    case "ATL":
+                        return 1020;
+                    case "AMS":
+                        return 195;
+                    case "OSL":
+                        return 310;
+                    case "TXL":
+                        return 215;
+                    case "MOW":
+                        return 270;
+                }
+            case "JFK":
+                switch (destination) {
+                    case "CPH":
+                        return 520;
+                    case "BCN":
+                        return 580;
+                    case "ATL":
+                        return 310;
+                    case "AMS":
+                        return 420;
+                    case "OSL":
+                        return 420;
+                    case "TXL":
+                        return 450;
+                    case "MOW":
+                        return 525;
+                }
+            case "ATL":
+                switch (destination) {
+                    case "CPH":
+                        return 510;
+                    case "BCN":
+                        return 1020;
+                    case "JFK":
+                        return 310;
+                    case "AMS":
+                        return 480;
+                    case "OSL":
+                        return 645;
+                    case "TXL":
+                        return 660;
+                    case "MOW":
+                        return 755;
+                }
+            case "AMS":
+                switch (destination) {
+                    case "CPH":
+                        return 190;
+                    case "BCN":
+                        return 195;
+                    case "JFK":
+                        return 420;
+                    case "ATL":
+                        return 480;
+                    case "OSL":
+                        return 305;
+                    case "TXL":
+                        return 210;
+                    case "MOW":
+                        return 185;
+                }
+            case "OSL":
+                switch (destination) {
+                    case "CPH":
+                        return 200;
+                    case "BCN":
+                        return 310;
+                    case "JFK":
+                        return 420;
+                    case "ATL":
+                        return 645;
+                    case "AMS":
+                        return 305;
+                    case "TXL":
+                        return 185;
+                    case "MOW":
+                        return 155;
+                }
+            case "TXL":
+                switch (destination) {
+                    case "CPH":
+                        return 195;
+                    case "BCN":
+                        return 215;
+                    case "JFK":
+                        return 450;
+                    case "ATL":
+                        return 660;
+                    case "AMS":
+                        return 210;
+                    case "OSL":
+                        return 155;
+                    case "MOW":
+                        return 165;
+                }
+            case "MOW":
+                switch (destination) {
+                    case "CPH":
+                        return 235;
+                    case "BCN":
+                        return 180;
+                    case "JFK":
+                        return 525;
+                    case "ATL":
+                        return 755;
+                    case "AMS":
+                        return 185;
+                    case "OSL":
+                        return 155;
+                    case "TXL":
+                        return 165;
+                }
+        }
+        return 0;
+    }
+
+//     public static void main(String[] args) throws ParseException {
+//        AirlineEngine e = new AirlineEngine();
+//        e.createFlightPrices();
+//        e.createAirlines(365);
+//    }
+    
+    public void createFlightPrices() {
+        String from = "";
+        String to = "";
+        for (int i = 0; i < airportTags.length-1; i++) {
+            for (int n = 0; n < airportTags.length-1; n++) {
+            from = airportTags[i];
+                to = airportTags[n];
+                       
+                new FlightJPA().persistFlightPrices(new FlightPrices(from, to , getFlightPrice(from,to)));
+            }
+
+        }
+    }
+
     public void createAirlines(int numberOfDays) throws ParseException {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("AirlinePU");
         EntityManager em = emf.createEntityManager();
@@ -262,7 +417,7 @@ public class AirlineEngine {
 
                 Airport originAirport = em.getReference(Airport.class, origin);
                 Airport destinationAirport = em.getReference(Airport.class, destination);
-                
+
                 try {
 
                     new FlightJPA().persistAirroute(new Airroute(flightID, flightNumber, date, numberOfSeats, travelTime, originAirport, destinationAirport));
