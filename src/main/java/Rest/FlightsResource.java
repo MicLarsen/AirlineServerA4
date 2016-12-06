@@ -99,7 +99,7 @@ public class FlightsResource {
         RestInterface fjpa = new FlightJPA();
 
         //Parse from iso-8601 to normal date format
-        ZonedDateTime iso8601 = ZonedDateTime.parse(ticket);
+        ZonedDateTime iso8601 = ZonedDateTime.parse(date);
         //Parse ZonedDateTime to normal Date object
         Date convertedDate = Date.from(iso8601.toInstant());
         
@@ -122,8 +122,8 @@ public class FlightsResource {
             obj.put("numberOfSeats", res.getNumberOfSeats());
 //            obj.put("totalPrice", res.getTotalPrice());
             obj.put("travelTime", res.getTraveltime());
-            obj.put("origin", res.getOrigin());
-            obj.put("destination", res.getDestination());
+            obj.put("origin", res.getOrigin().getIATACode());
+            obj.put("destination", res.getDestination().getIATACode());
 
             results.add(obj);
         }

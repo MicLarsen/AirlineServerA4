@@ -88,7 +88,8 @@ public class BookingResource {
         
         main.put("passengers", passengerList);
         
-        bjpa.deleteBookingOrder(bo);
+        //Used for testing ONLY!
+//        bjpa.deleteBookingOrder(bo);
 
         return main.toString();
         
